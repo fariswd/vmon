@@ -10,9 +10,14 @@ import {
   Header,
 } from 'react-native-elements'
 
+import cat from './../constant/catImage'
+
 export default class DetailsScreen extends React.Component {
   constructor() {
     super()
+    this.state = {
+      status: cat.idle
+    }
   }
   render() {
     return (
@@ -30,7 +35,7 @@ export default class DetailsScreen extends React.Component {
         <View style={style.container}>
           <TouchableOpacity>
             <Image
-              source={require('../assets/images/catnimate/idle_cat.gif')}
+              source={this.state.status}
             />
           </TouchableOpacity>
         </View>
