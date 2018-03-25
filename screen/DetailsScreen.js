@@ -2,6 +2,9 @@ import React from 'react'
 import {
   Text,
   View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
  } from 'react-native'
 import {
   Header,
@@ -13,7 +16,7 @@ export default class DetailsScreen extends React.Component {
   }
   render() {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <Header
           placement="left"
           leftComponent={{
@@ -24,8 +27,22 @@ export default class DetailsScreen extends React.Component {
           centerComponent={{ text: 'Detail Screen', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
-        <Text>This is Detail Screen</Text>
+        <View style={style.container}>
+          <TouchableOpacity>
+            <Image
+              source={require('../assets/images/catnimate/idle_cat.gif')}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
 }
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})

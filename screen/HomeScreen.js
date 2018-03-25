@@ -2,7 +2,9 @@ import React from 'react'
 import {
   Text,
   View,
-  StyleSheet
+  StyleSheet,
+  Image,
+  TouchableOpacity,
  } from 'react-native'
 import {
   Button,
@@ -15,14 +17,20 @@ export default class HomeScreen extends React.Component {
   }
   render() {
     return (
-      <View style={style.container}>
+      <View style={{flex: 1}}>
         <Header
           placement="left"
           leftComponent={{ icon: 'menu', color: '#fff' }}
           centerComponent={{ text: 'Home', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
-        <Text>This is Home Screen</Text>
+        <View style={style.container}>
+          <TouchableOpacity>
+            <Image
+              source={require('../assets/images/catnimate/run_cat.gif')}
+            />
+          </TouchableOpacity>
+        </View>
         <Button
           title= 'to detail'
           onPress= {() => this.props.navigation.navigate('Details')}
@@ -34,5 +42,8 @@ export default class HomeScreen extends React.Component {
 
 const style = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
