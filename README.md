@@ -1,5 +1,8 @@
 # vmon
 Virtual Monster :space_invader:  
+View Here: https://exp.host/@fariswd/vmon  
+
+![alt text](https://raw.githubusercontent.com/fariswd/vmon/master/ss.png)
 
 Development Trello  
 https://trello.com/b/WLHbLbHc/vmon  
