@@ -33,11 +33,11 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    // this._subscribe();
+    this._subscribe();
   }
 
   componentWillUnmount() {
-    // this._unsubscribe();
+    this._unsubscribe();
   }
 
   _subscribe = () => {
