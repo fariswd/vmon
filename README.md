@@ -2,7 +2,7 @@
 Virtual Monster :space_invader:  
 View Here: https://exp.host/@fariswd/vmon  
 
-![alt text](https://raw.githubusercontent.com/fariswd/vmon/master/ss.png)
+![alt text](https://raw.githubusercontent.com/fariswd/vmon/master/ss.png = 250x)
 
 Development Trello  
 https://trello.com/b/WLHbLbHc/vmon  

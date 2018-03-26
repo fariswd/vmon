@@ -71,6 +71,20 @@ export default class HomeScreen extends React.Component {
     this._subscription = null;
   };
 
+  toggle() {
+    if (this.state.statusWord == 'idle') {
+      this.setState({
+        statusImage: cat.run,
+        statusWord: 'run',
+      })
+    } else if (this.state.statusWord == 'run') {
+      this.setState({
+        statusImage: cat.idle,
+        statusWord: 'idle',
+      })
+    }
+  }
+
   toggleVisibleStep() {
     if(this.state.showStep) {
       this.setState({
