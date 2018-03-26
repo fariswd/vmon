@@ -1,21 +1,24 @@
 import React from 'react'
 import {
-  Text,
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
   ImageBackground,
+  Dimensions,
  } from 'react-native'
 import {
+  Text,
   Button,
   Header,
  } from 'react-native-elements';
 import Drawer from 'react-native-drawer'
+import { Pedometer } from "expo";
 
-import DrawerPanel from './../component/DrawerPanel'
 import cat from './../constant/catImage'
 import background from './../constant/background'
+
+const { height, width } = Dimensions.get('window');
 
 export default class HomeScreen extends React.Component {
   constructor() {
@@ -23,71 +26,92 @@ export default class HomeScreen extends React.Component {
     this.state = {
       statusImage: cat.idle,
       statusWord: 'idle',
+      pastStepCount: 0,
+      currentStepCount: 0,
+      showStep: false,
     }
   }
 
-  closeControlPanel = () => {
-    this._drawer.close()
-  };
+  componentDidMount() {
+    // this._subscribe();
+  }
 
-  openControlPanel = () => {
-    this._drawer.open()
-  };
+  componentWillUnmount() {
+    // this._unsubscribe();
+  }
 
-  toggle() {
-    if (this.state.statusWord == 'idle') {
+  _subscribe = () => {
+    this._subscription = Pedometer.watchStepCount(result => {
       this.setState({
-        statusImage: cat.run,
-        statusWord: 'run',
+        currentStepCount: result.steps,
+        delay: 0,
+      });
+      this.toggle()
+      setTimeout(() => { this.toggle() }, 3000);
+    });
+
+    // const end = new Date();
+    // const start = new Date();
+    // start.setDate(end.getDate() - 1);
+    // Pedometer.getStepCountAsync(start, end).then(
+    //   result => {
+    //     console.log(result.steps)
+    //     this.setState({ pastStepCount: result.steps });
+    //   },
+    //   error => {
+    //     this.setState({
+    //       pastStepCount: "Could not get stepCount: " + error
+    //     });
+    //   }
+    // );
+  };
+
+  _unsubscribe = () => {
+    this._subscription && this._subscription.remove();
+    this._subscription = null;
+  };
+
+  toggleVisibleStep() {
+    if(this.state.showStep) {
+      this.setState({
+        showStep: false
       })
     } else {
       this.setState({
-        statusImage: cat.idle,
-        statusWord: 'idle',
+        showStep: true
       })
     }
   }
 
   render() {
     return (
-      <Drawer
-        type="overlay"
-        ref={(ref) => this._drawer = ref}
-        content={<DrawerPanel p={this.props} />}
-        tapToClose={true}
-        openDrawerOffset={0.2} // 20% gap on the right side of drawer
-        panCloseMask={0.2}
-        closedDrawerOffset={-3}
-        styles={drawerStyles}
-        tweenHandler={(ratio) => ({
-          main: { opacity:(2-ratio)/2 }
-        })}
-      >
-        <View style={{flex: 1}}>
-          <Header
-            // leftComponent={{
-            //   icon: 'menu',
-            //   color: '#fff',
-            //   onPress: () => this.openControlPanel(),
-            // }}
-            centerComponent={{ text: 'Home', style: { color: '#fff' } }}
-          />
-          <ImageBackground
-            style={style.container}
-            source={background.mountain}
+      <View style={{flex: 1}}>
+        <Header
+          backgroundColor={'#42DEEB'}
+          rightComponent={{
+            icon: 'menu',
+            color: '#fff',
+            onPress: () => this.props.navigation.navigate('Details'),
+          }}
+          // centerComponent={{ text: 'Home', style: { color: '#fff' } }}
+        />
+        <ImageBackground
+          style={style.container}
+          source={background.mountain}
+          >
+          <View style={{ position: 'absolute', paddingBottom: height/2 + 80}}>
+            {!this.state.showStep ? null : <Text h1 style={style.stepCount}>{this.state.currentStepCount}</Text>}
+          </View>
+          <TouchableOpacity
+            onPress={() => this.toggleVisibleStep()}
             >
-            <TouchableOpacity
-                onPress= {() => this.toggle()}
-                // onPress= {() => this.props.navigation.navigate('Details')}
-              >
-              <Image
-                style= {style.imagePosition}
-                source={this.state.statusImage}
-              />
-            </TouchableOpacity>
-          </ImageBackground>
-        </View>
-      </Drawer>
+            <Image
+              style= {style.imagePosition}
+              source={this.state.statusImage}
+            />
+          </TouchableOpacity>
+        </ImageBackground>
+      </View>
     )
   }
 }
@@ -101,10 +125,10 @@ const style = StyleSheet.create({
   },
   imagePosition: {
     marginBottom: 25,
+  },
+  stepCount: {
+    fontFamily: 'sans-serif-light',
+    color: '#291936',
+    fontSize: 60,
   }
 })
-
-const drawerStyles = {
-  drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
-  main: {paddingLeft: 3},
-}
